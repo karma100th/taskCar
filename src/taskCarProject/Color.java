@@ -8,4 +8,7 @@ public enum Color {
             System.out.print(color.name() + "\t");
         }
     }
+    public static Color setRandomColor() {
+        return Color.values()[(int) Math.random()*(Color.values().length - 1)];
+    }
 }

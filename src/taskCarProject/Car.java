@@ -10,7 +10,7 @@ public class Car {
     private EngineDisplacement engineDisplacement;
     private OptionalExtras[] optionalExtras;
 
-    public Car(Color color, Model model, int yearProduction, WheelSize wheelSize,
+    public Car(Model model, Color color, int yearProduction, WheelSize wheelSize,
                EngineDisplacement engineDisplacement, OptionalExtras[] optionalExtras) {
         this.color = color;
         this.model = model;
@@ -20,7 +20,7 @@ public class Car {
         this.optionalExtras = optionalExtras;
     }
 
-    public Car(Color color, Model model, int yearProduction, WheelSize wheelSize,
+    public Car(Model model, Color color, int yearProduction, WheelSize wheelSize,
                EngineDisplacement engineDisplacement) {
         this.color = color;
         this.model = model;
@@ -58,10 +58,10 @@ public class Car {
     }
 
     public void setWheelSize(int size) {
-        if (size != this.wheelSize.getSizeValue()) {
+        if (size != wheelSize.getSizeValue()) {
             for (WheelSize wheelSizeElement : WheelSize.values()) {
                 if (wheelSizeElement.getSizeValue() == size) {
-                    this.wheelSize = wheelSize.getSizeByValue(size);
+                    wheelSize = WheelSize.getSizeByValue(size);
                 }
             }
         }
@@ -101,7 +101,7 @@ public class Car {
             this.optionalExtras = new OptionalExtras[1];
             this.optionalExtras[0] = optionalExtras;
         } else {
-            byte repeatChecker = 0;  //repeatChecker - variable to check for repeats
+            byte repeatChecker = 0;
             OptionalExtras[] optionalExtrasNew = new OptionalExtras[this.optionalExtras.length + 1];
             for (int i = 0; i < this.optionalExtras.length; i++) {
                 if (this.optionalExtras[i] == optionalExtras) {
@@ -120,40 +120,46 @@ public class Car {
 
     //method for adding optional extras учесть добавление нескольких похиций сразу или удаление нескольких
     public void deleteOptionalExtras(OptionalExtras delOptionalExtras) {
-        if (this.optionalExtras == null) {
+        if (optionalExtras == null) {
             return;
         }
-        if (this.optionalExtras.length == 1 && this.optionalExtras[0] == delOptionalExtras) {
-            this.optionalExtras = null;
+        if (optionalExtras.length == 1 && optionalExtras[0] == delOptionalExtras) {
+            optionalExtras = null;
             return;
         }
-        OptionalExtras[] optionalExtrasNew = new OptionalExtras[this.optionalExtras.length - 1];
-        for (int i = 0, j = 0; i < this.optionalExtras.length; i++, j++) {
-            if (delOptionalExtras != this.optionalExtras[i]) {
-//                if (i == this.optionalExtras.length - 1) {           //учел, что его может не быть, чтобы ошибок избежать c размером массива
-//                    return;
-//                } else {
-                optionalExtrasNew[j] = this.optionalExtras[i];
-//                }
+        OptionalExtras[] optionalExtrasNew = new OptionalExtras[optionalExtras.length - 1];
+        for (int i = 0, j = 0; i < optionalExtras.length; i++, j++) {
+            if (delOptionalExtras != optionalExtras[i]) {
+                optionalExtrasNew[j] = optionalExtras[i];
             } else {
                 j--;
             }
         }
-        this.optionalExtras = optionalExtrasNew;
+        optionalExtras = optionalExtrasNew;
     }
 
     //print information about car
     public void printCarInformation() {
-        System.out.println("Модель:\t" + this.model.name() + "\nЦвет кузова:\t" + this.color +
-                "\nОбъем двигателя:\t" + this.engineDisplacement.getVolumeValue() + " л\nРазмер колёс:\t" +
-                this.wheelSize.getSizeValue() + "\""
+        System.out.println("\nМодель:\t" + model.name() + "\nЦвет кузова:\t" + color +
+                "\nОбъем двигателя:\t" + engineDisplacement.getVolumeValue() + " л\nРазмер колёс:\t" +
+                wheelSize.getSizeValue() + "\""
         );
-        if (this.optionalExtras != null) {
+        if (optionalExtras != null) {
             System.out.print("Дополнительные опции:\t");
-            for (OptionalExtras optionalExtrasElement : this.optionalExtras) {
+            for (OptionalExtras optionalExtrasElement : optionalExtras) {
                 System.out.print(optionalExtrasElement.getNameOption() + "\t");
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return yearProduction == car.yearProduction && color == car.color && model == car.model &&
+                wheelSize == car.wheelSize && engineDisplacement == car.engineDisplacement &&
+                Arrays.equals(optionalExtras, car.optionalExtras);
     }
 }

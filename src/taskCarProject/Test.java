@@ -1,16 +1,23 @@
 package taskCarProject;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-        Car car1 = new Car(Color.GREEN, Model.AUDI, 1998, WheelSize.SIZE13, EngineDisplacement.MEDIUM_LITERS);
+        Service service1 = new Service();
+        AutoFactory autoFactory = new AutoFactory(new Model[]{Model.BMW, Model.GMC, Model.AUDI},
+                new EngineDisplacement[]{EngineDisplacement.MEDIUM_LITERS, EngineDisplacement.SMALL_LITERS},
+                new Color[]{Color.RED, Color.BLACK}, new WheelSize[]{WheelSize.SIZE14,WheelSize.SIZE13});
+        Showroom showroom1 = new Showroom(autoFactory,service1);
+        autoFactory.printFactoryCapabilities();
+        Car car1 = showroom1.carOrder(autoFactory, new Car(Model.AUDI, Color.GREEN, 2000,
+                WheelSize.SIZE15, EngineDisplacement.MEDIUM_LITERS));
+        service1.paintingCar(car1, Color.RED);
         car1.printCarInformation();
-        Service.paintingCar(car1, "blue");
+        service1.changeWheels(car1, 13);
         car1.printCarInformation();
-        Service.addOptions(car1,new OptionalExtras[]{OptionalExtras.WINCH, OptionalExtras.ROCKET_BOOSTER,OptionalExtras.CRUISE_CONTROL});
-        car1.printCarInformation();
-        Service.delOptions(car1, new OptionalExtras[]{OptionalExtras.WINCH, OptionalExtras.ROCKET_BOOSTER});
-        car1.printCarInformation();
+        
     }
 }
