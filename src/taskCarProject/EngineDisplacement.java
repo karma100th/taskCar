@@ -13,7 +13,8 @@ public enum EngineDisplacement {
     public double getVolumeValue() {
         return volumeValue;
     }
+
     public static EngineDisplacement setRandomEngineDisplacement() {
-        return EngineDisplacement.values()[(int) Math.random()*(EngineDisplacement.values().length - 1)];
+        return EngineDisplacement.values()[(int) Math.random() * (EngineDisplacement.values().length - 1)];
     }
 }

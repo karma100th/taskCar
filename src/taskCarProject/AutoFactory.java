@@ -25,6 +25,7 @@ public class AutoFactory {
                     WheelSize.setRandomWheelSize(), EngineDisplacement.setRandomEngineDisplacement());
         }
     }
+
     //print possible models, colors, engine capacity, wheel sizes
     public void printFactoryCapabilities() {
         System.out.print("Завод может выпускать автомобили со следующими характеристиками:\n" +
@@ -45,8 +46,9 @@ public class AutoFactory {
             System.out.print(wheelSize.getSizeValue() + "\"\t");
         }
     }
+
     //create a car for the salon
-    public Car createCar (Car carForSalon) {
+    public Car createCar(Car carForSalon) {
         for (Car carElement : stock) {
             if (carForSalon.equals(carForSalon)) {
                 return carElement;

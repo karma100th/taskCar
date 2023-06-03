@@ -26,12 +26,13 @@ public class Showroom {
     public Car paintingCar(Service service, Car car, Color color) {
         return service.paintingCar(car, color);
     }
+
     public Car paintingCar(Service service, Car car, String color) {
         return service.paintingCar(car, color);
     }
 
     //change wheels in the service
-    public  Car changeWheels( Service service, Car car, int wheelsSize) {
+    public Car changeWheels(Service service, Car car, int wheelsSize) {
         return service.changeWheels(car, wheelsSize);
     }
 

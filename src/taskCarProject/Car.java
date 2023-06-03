@@ -118,7 +118,7 @@ public class Car {
 
     }
 
-    //method for adding optional extras учесть добавление нескольких похиций сразу или удаление нескольких
+    //method for delete optional extras
     public void deleteOptionalExtras(OptionalExtras delOptionalExtras) {
         if (optionalExtras == null) {
             return;
