@@ -13,4 +13,12 @@ public enum OptionalExtras {
         return nameOption;
     }
 
+    public static String[] getNameArray(OptionalExtras[] optionalExtras) {
+        String[] arrayNames = new String[OptionalExtras.values().length];
+        for (int i = 0; i < arrayNames.length; i++) {
+            arrayNames[i] = OptionalExtras.values()[i].nameOption;
+        }
+        return arrayNames;
+    }
+
 }

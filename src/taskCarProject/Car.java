@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class Car {
     private Color color;
-    private Model model;
-    private int yearProduction;
+    private final Model model;
+    private final int yearProduction;
     private WheelSize wheelSize;
-    private EngineDisplacement engineDisplacement;
+    private final EngineDisplacement engineDisplacement;
     private OptionalExtras[] optionalExtras;
 
     public Car(Model model, Color color, int yearProduction, WheelSize wheelSize,
@@ -151,6 +151,18 @@ public class Car {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "Модель: " + model +
+                ", Цвет кузова: " + color +
+                ", Год выпуска: " + yearProduction +
+                ", Размер дисков: " + wheelSize.getSizeValue() +
+                ", Обьем двигателя" + engineDisplacement.getVolumeValue() +
+                ", Дополнительные опции:" + Arrays.toString(OptionalExtras.getNameArray(optionalExtras)) +
+                '}';
     }
 
     @Override
