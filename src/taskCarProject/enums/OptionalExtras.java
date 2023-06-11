@@ -1,4 +1,6 @@
-package taskCarProject;
+package taskCarProject.enums;
+
+import java.util.Set;
 
 public enum OptionalExtras {
     CRUISE_CONTROL("круиз-констроль"), WINCH("лебедка"),
@@ -13,10 +15,11 @@ public enum OptionalExtras {
         return nameOption;
     }
 
+
     public static String[] getNameArray(OptionalExtras[] optionalExtras) {
-        String[] arrayNames = new String[OptionalExtras.values().length];
+        String[] arrayNames = new String[optionalExtras.length];
         for (int i = 0; i < arrayNames.length; i++) {
-            arrayNames[i] = OptionalExtras.values()[i].nameOption;
+            arrayNames[i] = optionalExtras[i].nameOption;
         }
         return arrayNames;
     }

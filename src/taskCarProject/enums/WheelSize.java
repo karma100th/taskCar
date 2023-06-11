@@ -1,4 +1,4 @@
-package taskCarProject;
+package taskCarProject.enums;
 
 public enum WheelSize {
     SIZE13(13), SIZE14(14), SIZE15(15), SIZE16(16),
@@ -24,6 +24,14 @@ public enum WheelSize {
 
     public static WheelSize setRandomWheelSize() {
         return WheelSize.values()[(int) Math.random() * (WheelSize.values().length - 1)];
+    }
+
+    public static int[] getSizeValueArray(WheelSize[] wheelSizes) {
+        int[] arrayValues = new int[wheelSizes.length];
+        for (int i = 0; i < arrayValues.length; i++) {
+            arrayValues[i] = wheelSizes[i].getSizeValue();
+        }
+        return arrayValues;
     }
 
 }

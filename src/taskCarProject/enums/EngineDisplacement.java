@@ -1,4 +1,4 @@
-package taskCarProject;
+package taskCarProject.enums;
 
 public enum EngineDisplacement {
     MICRO_LITERS(1.1), SMALL_LITERS(1.7),
@@ -16,5 +16,13 @@ public enum EngineDisplacement {
 
     public static EngineDisplacement setRandomEngineDisplacement() {
         return EngineDisplacement.values()[(int) Math.random() * (EngineDisplacement.values().length - 1)];
+    }
+
+    public static double[] getEngineValueArray(EngineDisplacement[] engineDisplacements) {
+        double[] arrayValues = new double[engineDisplacements.length];
+        for (int i = 0; i < arrayValues.length; i++) {
+            arrayValues[i] = engineDisplacements[i].getVolumeValue();
+        }
+        return arrayValues;
     }
 }

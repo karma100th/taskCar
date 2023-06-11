@@ -1,4 +1,4 @@
-package taskCarProject;
+package taskCarProject.enums;
 
 public enum Color {
     RED, GREEN, YELLOW, WHITE, BLACK, BLUE;
