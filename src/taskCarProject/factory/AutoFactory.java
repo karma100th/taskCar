@@ -1,79 +1,77 @@
 package taskCarProject.factory;
 
 import taskCarProject.car.Car;
-import taskCarProject.enums.Color;
-import taskCarProject.enums.EngineDisplacement;
-import taskCarProject.enums.Model;
-import taskCarProject.enums.WheelSize;
+import taskCarProject.characteristics.options.DopOptions;
+import taskCarProject.interfaces.ColorsInter;
+import taskCarProject.interfaces.EngineDisplacementInter;
+import taskCarProject.interfaces.ModelInter;
+import taskCarProject.interfaces.WheelSizeInter;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class AutoFactory {
-    private Model[] models;
-    private EngineDisplacement[] engineDisplacements;
-    private Color[] colors;
-    private WheelSize[] wheelSizes;
-    private Stock stock;
+public abstract class AutoFactory {
+    protected ModelInter[] models;
+    protected EngineDisplacementInter[] engineDisplacements;
+    protected ColorsInter[] colors;
+    protected WheelSizeInter[] wheelSizes;
+    protected DopOptions[] dopOptions;
+    protected Stock stock;
 
 
-    public AutoFactory(Model[] models, EngineDisplacement[] engineDisplacements, Color[] colors, WheelSize[] wheelSizes) {
+    public AutoFactory(ModelInter[] models, EngineDisplacementInter[] engineDisplacements, ColorsInter[] colors,
+                       WheelSizeInter[] wheelSizes, DopOptions[] dopOptions) {
         this.models = models;
         this.engineDisplacements = engineDisplacements;
         this.colors = colors;
         this.wheelSizes = wheelSizes;
-        Car[] carsInStock = new Car[models.length];
-        for (int i = 0; i < carsInStock.length; i++) {
-            carsInStock[i] = new Car(models[i], Color.setRandomColor(), LocalDate.now().getYear(),
-                    WheelSize.setRandomWheelSize(), EngineDisplacement.setRandomEngineDisplacement());
-        }
+        this.dopOptions = dopOptions;
+        ArrayList<Car> carsInStock = new ArrayList<>();
         stock = new Stock(carsInStock);
+    }
+
+    protected Stock getStock() {
+        return stock;
     }
 
     //print possible models, colors, engine capacity, wheel sizes
     public void printFactoryCapabilities() {
-        System.out.print("Завод может выпускать автомобили со следующими характеристиками:\n" +
-                "Модель:    ");
-        System.out.println(Arrays.toString(models));
-        System.out.print("Цвета:    ");
-        System.out.println(Arrays.toString(colors));
-        System.out.print("Обьем двигателя:    ");
-        System.out.println(Arrays.toString(EngineDisplacement.getEngineValueArray(engineDisplacements)));
-        System.out.print("Размеры колес:    ");
-        System.out.println(Arrays.toString(WheelSize.getSizeValueArray(wheelSizes)));
+        System.out.printf(
+                "Завод может выпускать автомобили со следующими характеристиками:\nМодель:    %s\n"
+                        + "Цвета:    %s\n"
+                        + "Обьем двигателя:    %s\n"
+                        + "Размеры колес:    %s\n", Arrays.toString(models), Arrays.toString(colors),
+                Arrays.stream(engineDisplacements)
+                        .map(EngineDisplacementInter::getVolumeValue)
+                        .collect(Collectors.toList()),
+                Arrays.stream(wheelSizes)
+                        .map(WheelSizeInter::getSizeValue)
+                        .collect(Collectors.toList())
+        );
     }
 
     //create a car for the salon
-    public Car createCar(Model model, Color color, int yearProduction, WheelSize wheelSize,
-                         EngineDisplacement engineDisplacement) {
-        Car carForSalon = new Car(null, null, 0, null, null);
-        Model modelForSalon = null;
-        Color colorForSalon = null;
-        int yearProductionForSalon;
-        EngineDisplacement engineDisplacementForSalon = null;
-        WheelSize wheelSizeForSalon = null;
-        for (Car carElement : stock.getCars()) {
-            if (carElement.getModel() == model && carElement.getYearProduction() == yearProduction &&
-                    carElement.getEngineDisplacement() == engineDisplacement && carElement.getWheelSize() == wheelSize
-                    && carElement.getColor() == color) {
-                carForSalon = carElement;
-                stock.deleteCar(carElement);
-                break;
-            } else if (carElement.getModel() == model && carElement.getYearProduction() == yearProduction &&
-                    carElement.getEngineDisplacement() == engineDisplacement && carElement.getWheelSize() == wheelSize) {
-                carForSalon = carElement;
-                carForSalon.setColor(color);
-                stock.deleteCar(carElement);
-            } else if (carElement.getModel() == model && carElement.getYearProduction() == yearProduction &&
-                    carElement.getEngineDisplacement() == engineDisplacement && carElement.getColor() == color) {
-                carForSalon = carElement;
-                carForSalon.setWheelSize(wheelSize);
-                stock.deleteCar(carElement);
+    protected Car createCar(ModelInter model, ColorsInter color, int yearProduction, WheelSizeInter wheelSize,
+                            EngineDisplacementInter engineDisplacement, DopOptions dopOptions) {
+        Car newCar = stock.getCarFromStock(model, color, yearProduction, wheelSize, engineDisplacement, dopOptions);
+        if (newCar != null && Arrays.asList(colors).contains(color) && Arrays.asList(wheelSizes).contains(wheelSize)
+                && Arrays.asList(this.dopOptions).contains(dopOptions)) {
+            if (color != newCar.getColor()) {
+                newCar.setColor(color);
             }
+            if (wheelSize != newCar.getWheelSize()) {
+                newCar.setWheelSize(wheelSize);
+            }
+            if (dopOptions.getValue() != newCar.getDopOptions().getValue()) {
+                newCar.setDopOptions(dopOptions);
+            }
+            return newCar;
         }
-        if (carForSalon.getModel() == null) {
-            carForSalon = new Car(model, color, yearProduction, wheelSize, engineDisplacement);
-        }
-        return carForSalon;
+        return null;
+    }
+
+    //create a cars in Stock
+    public void printCarsInStock() {
+        System.out.println(stock.toString());
     }
 }
